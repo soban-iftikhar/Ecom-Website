@@ -25,6 +25,7 @@ public class CustomerService {
     }
 
     public Admin adminSignup(Admin admin) {
+        //save method
         return repo.save(admin);
     }
 
