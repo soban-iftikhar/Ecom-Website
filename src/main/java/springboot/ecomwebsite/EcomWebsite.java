@@ -4,9 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import springboot.ecomwebsite.Model.Customer;
 import springboot.ecomwebsite.Model.Product;
+import springboot.ecomwebsite.Service.CustomerService;
 import springboot.ecomwebsite.Service.ProductService;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +17,10 @@ import java.util.Scanner;
 public class EcomWebsite implements CommandLineRunner {
 
     @Autowired
-    private ProductService service;// Use Spring to inject the ProductService
+    private ProductService service;
+    @Autowired
+    private CustomerService cService;
+//    private AdminService aService;
 
     public static void main(String[] args) {
         SpringApplication.run(EcomWebsite.class, args); // Start the Spring Boot application
@@ -31,6 +37,8 @@ public class EcomWebsite implements CommandLineRunner {
             System.out.println("3. Add Product");
             System.out.println("4. Update Product");
             System.out.println("5. Delete Product");
+//            System.out.println("Admin login");
+            System.out.println("6. Customer login");
             System.out.println("0. Exit");
 
             System.out.print("Enter your choice: ");
@@ -88,18 +96,18 @@ public class EcomWebsite implements CommandLineRunner {
                 case 4:
                     System.out.print("Enter Product ID to update: ");
                     int updateID = input.nextInt();
+                    input.nextLine(); // Consume newline
                     Product existingProduct = service.getProductById(updateID);
                     if (existingProduct != null) {
                         System.out.print("Enter new name: ");
                         existingProduct.setName(input.nextLine());
-                        input.nextLine();
                         System.out.print("Enter new description: ");
                         existingProduct.setDescription(input.nextLine());
                         System.out.print("Enter new price: ");
                         existingProduct.setPrice(input.nextDouble());
+                        input.nextLine(); // Consume newline
                         System.out.print("Enter new category: ");
-                        existingProduct.setCategory(input.next());
-                        existingProduct.setAvailable(true); // Assume available for simplicity
+                        existingProduct.setCategory(input.nextLine());
                         service.updateProduct(updateID, existingProduct);
                         System.out.println("Product updated successfully.");
                     } else {
@@ -112,6 +120,29 @@ public class EcomWebsite implements CommandLineRunner {
                     int deleteID = input.nextInt();
                     service.deleteProduct(deleteID);
                     System.out.println("Product deleted successfully.");
+                    break;
+
+                case 6:
+                    System.out.println("Enter Your Name");
+                    String name = input.nextLine();
+                    System.out.println("Enter username");
+                    String username = input.nextLine();
+                    System.out.println("Enter Your Email");
+                    String email = input.nextLine();
+                    System.out.println("Enter password");
+                    String password = input.nextLine();
+                    System.out.println("Enter phone#");
+                    String phone = input.nextLine();
+                    System.out.println("Enter Your DOB (YYYY-MM-DD)");
+                    String dob = input.nextLine();
+                    System.out.println("Enter Address");
+                    String address = input.nextLine();
+
+                    // Create Customer object
+                    Customer customer = new Customer(name, username, email, phone, password, dob, address);
+
+                    // Sign up the customer
+                    cService.customerSignup(customer);
                     break;
 
                 case 0:

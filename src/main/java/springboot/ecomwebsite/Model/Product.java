@@ -17,7 +17,7 @@ public class Product {
     private double price;
     private String category;
     private Boolean isAvailable;
-    private boolean isDeleted;
+//    private boolean isDeleted;
 
     // Default constructor
     public Product() {
@@ -33,9 +33,16 @@ public class Product {
         this.isAvailable = isAvailable;
     }
 
-    public void setAvailable(Boolean available) {
-        isAvailable = available;
-    }
+
+        public boolean getIsAvailable() {
+            return isAvailable;
+        }
+
+        public void setIsAvailable(boolean available) {
+            this.isAvailable = available;
+        }
+
+
 
 //    public String getName() {
 //        return name;
