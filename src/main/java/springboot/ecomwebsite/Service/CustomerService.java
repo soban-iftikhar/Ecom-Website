@@ -17,6 +17,7 @@ public class CustomerService {
     }
 
     public Customer customerLogin(String email, String password) {
+        // find user by username
         Customer customer = repo.findByCustUsername(email);
         if (customer != null && customer.getPassword().equals(password)) {
             return customer;
