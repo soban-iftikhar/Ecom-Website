@@ -24,4 +24,5 @@ public class CustomerService {
                 (customer.getEmail().equals(username) || customer.getUsername().equals(username)) &&
                 customer.getPassword().equals(password);
     }
+
 }
