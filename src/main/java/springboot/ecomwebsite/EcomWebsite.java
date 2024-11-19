@@ -9,7 +9,6 @@ import springboot.ecomwebsite.Model.Product;
 import springboot.ecomwebsite.Service.CustomerService;
 import springboot.ecomwebsite.Service.ProductService;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,8 +36,8 @@ public class EcomWebsite implements CommandLineRunner {
             System.out.println("3. Add Product");
             System.out.println("4. Update Product");
             System.out.println("5. Delete Product");
-//            System.out.println("Admin login");
-            System.out.println("6. Customer login");
+            System.out.println("6. Customer signup");
+            System.out.println("7. customer login");
             System.out.println("0. Exit");
 
             System.out.print("Enter your choice: ");
@@ -140,9 +139,29 @@ public class EcomWebsite implements CommandLineRunner {
 
                     // Create Customer object
                     Customer customer = new Customer(name, username, email, phone, password, dob, address);
-
-                    // Sign up the customer
                     cService.customerSignup(customer);
+                    try {
+                        cService.customerSignup(customer);
+                        System.out.println("Signup successful! Welcome, " + customer.getUsername());
+                    } catch (IllegalArgumentException e) {
+                        System.out.println("Signup failed: " + e.getMessage());
+                    }
+
+                    break;
+                case 7:
+                    System.out.println("Enter username or email");
+                    String uName = input.nextLine();
+                    System.out.println("Enter Password");
+                    String pass = input.nextLine();
+                    cService.customerLogin(uName, pass);
+                    boolean isAuthenticated = cService.customerLogin(uName, pass);
+
+                    if (isAuthenticated) {
+                        System.out.println("Login successful! Welcome back, " + uName);
+                    } else {
+                        System.out.println("Login failed: Incorrect username or password.");
+                    }
+
                     break;
 
                 case 0:
@@ -156,18 +175,3 @@ public class EcomWebsite implements CommandLineRunner {
         }
     }
 }
-
-
-//
-//package springboot.ecomwebsite;
-//
-//import org.springframework.boot.SpringApplication;
-//import org.springframework.boot.autoconfigure.SpringBootApplication;
-//import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-//
-//@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-//public class EcomWebsite {
-//    public static void main(String[] args) {
-//        SpringApplication.run(EcomWebsite.class, args);
-//    }
-//}

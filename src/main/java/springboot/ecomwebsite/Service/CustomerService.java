@@ -12,18 +12,16 @@ public class CustomerService {
     private CustomerRepo repo;
 
     public Customer customerSignup(Customer customer) {
-        if (repo.findByUsername(customer.getUsername()) != null) {
-            System.out.println("Username already existed");
-            return null;
+        if (repo.findByUsername(customer.getUsername()) != null || repo.findByEmail(customer.getEmail()) != null) {
+            throw new IllegalArgumentException("Username or Email already exists");
         }
         return repo.save(customer);
     }
 
-    public Customer customerLogin(String username, String password) {
+    public boolean customerLogin(String username, String password) {
         Customer customer = repo.findByUsername(username);
-        if (customer != null && customer.getPassword().equals(password)) {
-            return customer;
-        }
-        return null;
+        return customer != null &&
+                (customer.getEmail().equals(username) || customer.getUsername().equals(username)) &&
+                customer.getPassword().equals(password);
     }
 }
